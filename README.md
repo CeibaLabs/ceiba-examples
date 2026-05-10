@@ -9,11 +9,7 @@ The goal of this repo is still the same:
 
 ## What’s in this repository
 
-Current state:
-
-- repo baseline only
-- no committed example app yet
-- first planned slice: a narrow Express proof app that mirrors the public quickstart honestly
+- **`express-proof/`** — minimal Express server with **`GET /v1/hello`** protected by **`@ceibalabs/ceiba-sdk`** (`ceibaExpressMiddleware`), aligned with the public **`ceiba-docs`** quickstart.
 
 ## Who this is for
 
@@ -32,12 +28,18 @@ to:
 
 > “I have a protected API with keys, limits, and commercial access rules”
 
-## Current note
+## Run the Express proof
 
-Use the docs quickstart today:
+```bash
+cd express-proof
+cp .env.example .env
+# set CEIBA_RUNTIME_URL, CEIBA_PROJECT_ID, CEIBA_PROJECT_SECRET
 
-- see `ceiba-docs/docs/quickstart.md` in the local CeibaLabs workspace for the current truthful Runtime + SDK path
-- example apps will be added here once that path is mirrored in runnable form
+npm install
+npm start
+```
+
+Integration shape and denial behavior are documented in **`ceiba-docs`** (`docs/quickstart.md`).
 
 ## Related repos
 
