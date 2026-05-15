@@ -10,6 +10,7 @@ The goal of this repo is still the same:
 ## What’s in this repository
 
 - **`express-proof/`** — minimal Express server with **`GET /v1/hello`** protected by **`@ceibalabs/ceiba-sdk`** (`ceibaExpressMiddleware`), aligned with the public **`ceiba-docs`** quickstart.
+- **`express-proof/scripts/programmatic-keys.mjs`** — CLI demo of **`CeibaRuntimeClient`** list / create / get / expiry / revoke (`npm run demo:programmatic-keys` from **`express-proof/`**). Documented in **`express-proof/README.md`**.
 
 ## Who this is for
 
@@ -37,6 +38,12 @@ cp .env.example .env
 
 npm install
 npm start
+```
+
+Optional — programmatic key lifecycle (**`CeibaRuntimeClient`**, no HTTP server):
+
+```bash
+npm run demo:programmatic-keys
 ```
 
 Integration shape and denial behavior are documented in **`ceiba-docs`** (`docs/quickstart.md`).

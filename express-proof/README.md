@@ -37,6 +37,19 @@ Smoke call:
 curl -s -H "Authorization: Bearer <your-api-key>" http://localhost:3000/v1/hello
 ```
 
+## Programmatic key lifecycle (CLI demo)
+
+This folder also includes a **non-HTTP** script that walks through **`CeibaRuntimeClient`** machine APIs: list, create, get, set/clear **expiry**, and **revoke** (same env vars as the server).
+
+Requires **Node 20+** with support for **`--env-file`** (used to load `.env`).
+
+```bash
+npm install
+npm run demo:programmatic-keys
+```
+
+The script creates a throwaway key named `ceiba-examples-demo-<timestamp>`, prints the **plaintext once**, then revokes it. See the matching narrative in the **`ceiba-docs`** repo: **`docs/programmatic-api-keys.md`** (in your CeibaLabs workspace clone).
+
 ## Denials and transport errors
 
 The SDK maps Runtime **denials** to HTTP status and JSON `error` codes, and **transport** failures (bad secret, Runtime down, etc.) separately. See the quickstart tables in **`ceiba-docs`**.
