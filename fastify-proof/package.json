@@ -1,0 +1,18 @@
+{
+  "name": "ceiba-example-fastify-proof",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Minimal Fastify app mirroring the Ceiba Runtime + SDK path (preHandler, same contract as express-proof).",
+  "type": "module",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@ceibalabs/ceiba-sdk": "file:../../ceiba-sdk-node",
+    "fastify": "^5.2.1"
+  }
+}

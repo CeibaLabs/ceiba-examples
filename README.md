@@ -10,6 +10,7 @@ The goal of this repo is still the same:
 ## What’s in this repository
 
 - **`express-proof/`** — minimal Express server with **`GET /v1/hello`** protected by **`@ceibalabs/ceiba-sdk`** (`ceibaExpressMiddleware`), aligned with the public **`ceiba-docs`** quickstart.
+- **`fastify-proof/`** — same protected route with **`ceibaFastifyPreHandler`** (Fastify 5); same **`CEIBA_*`** env contract as **`express-proof/`**.
 - **`express-proof/scripts/programmatic-keys.mjs`** — CLI demo: **`listApiKeys`**, two throwaway keys (**revoke** path with expiry set/clear + **revoke**; **archive** path with **archive**), final **`listApiKeys`** (`npm run demo:programmatic-keys` from **`express-proof/`**). Documented in **`express-proof/README.md`**.
 
 ## Who this is for
@@ -47,6 +48,19 @@ npm run demo:programmatic-keys
 ```
 
 Integration shape and denial behavior are documented in **`ceiba-docs`** (`docs/quickstart.md`).
+
+## Run the Fastify proof
+
+```bash
+cd fastify-proof
+cp .env.example .env
+# set CEIBA_RUNTIME_URL, CEIBA_PROJECT_ID, CEIBA_PROJECT_SECRET (use a different PORT if Express runs too)
+
+npm install
+npm start
+```
+
+Details in **`fastify-proof/README.md`**.
 
 ## Related repos
 

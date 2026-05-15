@@ -15,6 +15,11 @@
 - No Runtime/SDK/Control Plane code changes; same **`file:../../ceiba-sdk-node`** dependency as the Express proof.
 - **Repo:** correction **`68d62a0`** on **`feat/examples-programmatic-key-workflows`** (prior feature **`c3e4e77`**); merge to **`dev`** pending review.
 
+## 2026-05-15 — Fastify proof app (`feat/examples-fastify-proof`)
+
+- **`fastify-proof/`**: **`GET /v1/hello`** with **`ceibaFastifyPreHandler`**; **`file:../../ceiba-sdk-node`**, **Fastify ^5**; same **`.env.example`** as Express proof; no programmatic-keys script (narrow authorize mirror only).
+- **Repo:** branch **`feat/examples-fastify-proof`** (merge to **`dev`** pending review).
+
 ## Next
 
-- Optional **Fastify** sibling example later; keep each example narrow.
+- Further examples only when explicitly approved; keep each app narrow.
