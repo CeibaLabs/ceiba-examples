@@ -1,6 +1,7 @@
 /**
- * Demo: CeibaRuntimeClient programmatic key lifecycle (list, create, get, expiry, revoke).
- * Requires the same CEIBA_* env vars as `src/server.js`. Run via `npm run demo:programmatic-keys`.
+ * Demo: CeibaRuntimeClient programmatic key lifecycle (list, create, get, expiry, revoke, archive).
+ * Two throwaway keys: one revoked after expiry set/clear; one archived while still active.
+ * Same CEIBA_* env vars as `src/server.js`. Run: `npm run demo:programmatic-keys`.
  */
 import {
   CeibaRuntimeClient,
@@ -15,36 +16,52 @@ async function main() {
     projectSecret: process.env.CEIBA_PROJECT_SECRET,
   });
   const client = new CeibaRuntimeClient(config);
+  const ts = Date.now();
 
   console.log("--- listApiKeys (before) ---");
-  const before = await client.listApiKeys();
-  console.log(JSON.stringify(before, null, 2));
+  console.log(JSON.stringify(await client.listApiKeys(), null, 2));
 
-  const displayName = `ceiba-examples-demo-${Date.now()}`;
-  console.log("\n--- createApiKey ---", displayName);
-  const created = await client.createApiKey(displayName);
-  console.log("apiKeyId:", created.apiKeyId);
-  console.log("keyPrefix:", created.keyPrefix);
-  console.log("plaintextKey (save now; not shown again):", created.plaintextKey);
+  // --- Key 1: create → get → set/clear expiry → revoke ---
+  const displayNameRevoke = `ceiba-examples-demo-revoke-${ts}`;
+  console.log("\n--- [revoke path] createApiKey ---", displayNameRevoke);
+  const createdRevoke = await client.createApiKey(displayNameRevoke);
+  console.log("apiKeyId:", createdRevoke.apiKeyId);
+  console.log("keyPrefix:", createdRevoke.keyPrefix);
+  console.log("plaintextKey (save now; not shown again):", createdRevoke.plaintextKey);
 
-  const { apiKeyId } = created;
+  const revokeKeyId = createdRevoke.apiKeyId;
 
-  console.log("\n--- getApiKey ---");
-  console.log(JSON.stringify(await client.getApiKey(apiKeyId), null, 2));
+  console.log("\n--- [revoke path] getApiKey ---");
+  console.log(JSON.stringify(await client.getApiKey(revokeKeyId), null, 2));
 
   const futureIso = new Date(Date.now() + 365 * 86400_000).toISOString();
-  console.log("\n--- setApiKeyExpiry (1y) ---", futureIso);
-  console.log(JSON.stringify(await client.setApiKeyExpiry(apiKeyId, futureIso), null, 2));
+  console.log("\n--- [revoke path] setApiKeyExpiry (1y) ---", futureIso);
+  console.log(JSON.stringify(await client.setApiKeyExpiry(revokeKeyId, futureIso), null, 2));
 
-  console.log("\n--- setApiKeyExpiry (clear) ---");
-  console.log(JSON.stringify(await client.setApiKeyExpiry(apiKeyId, null), null, 2));
+  console.log("\n--- [revoke path] setApiKeyExpiry (clear) ---");
+  console.log(JSON.stringify(await client.setApiKeyExpiry(revokeKeyId, null), null, 2));
 
-  console.log("\n--- revokeApiKey ---");
-  console.log(JSON.stringify(await client.revokeApiKey(apiKeyId), null, 2));
+  console.log("\n--- [revoke path] revokeApiKey ---");
+  console.log(JSON.stringify(await client.revokeApiKey(revokeKeyId), null, 2));
 
-  console.log("\n--- listApiKeys (after; demo key should be revoked) ---");
-  const after = await client.listApiKeys();
-  console.log(JSON.stringify(after, null, 2));
+  // --- Key 2: create → get → archive (separate active key) ---
+  const displayNameArchive = `ceiba-examples-demo-archive-${ts}`;
+  console.log("\n--- [archive path] createApiKey ---", displayNameArchive);
+  const createdArchive = await client.createApiKey(displayNameArchive);
+  console.log("apiKeyId:", createdArchive.apiKeyId);
+  console.log("keyPrefix:", createdArchive.keyPrefix);
+  console.log("plaintextKey (save now; not shown again):", createdArchive.plaintextKey);
+
+  const archiveKeyId = createdArchive.apiKeyId;
+
+  console.log("\n--- [archive path] getApiKey ---");
+  console.log(JSON.stringify(await client.getApiKey(archiveKeyId), null, 2));
+
+  console.log("\n--- [archive path] archiveApiKey ---");
+  console.log(JSON.stringify(await client.archiveApiKey(archiveKeyId), null, 2));
+
+  console.log("\n--- listApiKeys (after; expect one revoked, one archived) ---");
+  console.log(JSON.stringify(await client.listApiKeys(), null, 2));
 }
 
 main().catch((err) => {

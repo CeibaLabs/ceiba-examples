@@ -39,16 +39,21 @@ curl -s -H "Authorization: Bearer <your-api-key>" http://localhost:3000/v1/hello
 
 ## Programmatic key lifecycle (CLI demo)
 
-This folder also includes a **non-HTTP** script that walks through **`CeibaRuntimeClient`** machine APIs: list, create, get, set/clear **expiry**, and **revoke** (same env vars as the server).
-
-Requires **Node 20+** with support for **`--env-file`** (used to load `.env`).
+This folder also includes a **non-HTTP** script that exercises **`CeibaRuntimeClient`** machine APIs with the **same `CEIBA_*` env vars** as the server. Requires **Node 20+** with **`--env-file`** support (used to load `.env`).
 
 ```bash
 npm install
 npm run demo:programmatic-keys
 ```
 
-The script creates a throwaway key named `ceiba-examples-demo-<timestamp>`, prints the **plaintext once**, then revokes it. See the matching narrative in the **`ceiba-docs`** repo: **`docs/programmatic-api-keys.md`** (in your CeibaLabs workspace clone).
+**Exact script behavior (in order):**
+
+1. **`listApiKeys`** — prints the list once (before).
+2. **Revoke-path key** — **`createApiKey`** with display name `ceiba-examples-demo-revoke-<timestamp>`; prints **`apiKeyId`**, **`keyPrefix`**, and **`plaintextKey` once**; then **`getApiKey`**; **`setApiKeyExpiry`** to ~1 year ahead; **`setApiKeyExpiry`** with **`null`** to clear; then **`revokeApiKey`**.
+3. **Archive-path key** — **`createApiKey`** with display name `ceiba-examples-demo-archive-<timestamp>`; prints **`plaintextKey` once**; then **`getApiKey`**; then **`archiveApiKey`** (key stays **active** until archive; not revoked first).
+4. **`listApiKeys`** — prints the list again (after); you should see one **revoked** and one **archived** row among your project keys.
+
+See **`ceiba-docs`** **`docs/programmatic-api-keys.md`** in your CeibaLabs workspace clone for the HTTP/SDK reference that matches this flow.
 
 ## Denials and transport errors
 

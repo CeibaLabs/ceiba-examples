@@ -9,11 +9,11 @@
 
 ## 2026-05-14 — Programmatic key demo script (`feat/examples-programmatic-key-workflows`)
 
-- **`express-proof/scripts/programmatic-keys.mjs`**: **`listApiKeys` → `createApiKey` → `getApiKey` → `setApiKeyExpiry` (set + clear) → `revokeApiKey`**, prints JSON; creates a throwaway **`ceiba-examples-demo-*`** key then revokes it.
+- **`express-proof/scripts/programmatic-keys.mjs`**: ordered demo — **`listApiKeys` (before)** → **revoke-path key**: **`createApiKey`** (`ceiba-examples-demo-revoke-<ts>`) → **`getApiKey`** → **`setApiKeyExpiry`** (set ~1y, then **`null`**) → **`revokeApiKey`** → **archive-path key**: **`createApiKey`** (`ceiba-examples-demo-archive-<ts>`) → **`getApiKey`** → **`archiveApiKey`** → **`listApiKeys` (after)**. JSON to stdout; **plaintext printed once per create**.
 - **`express-proof/package.json`**: **`demo:programmatic-keys`** using **`node --env-file=.env`** (Node 20+).
-- **`express-proof/README.md`** + repo **`README.md`**: how to run; pointer to **`ceiba-docs`** **`programmatic-api-keys.md`**.
+- **`express-proof/README.md`** + repo **`README.md`**: wording matches the script step-for-step; pointer to **`ceiba-docs`** **`programmatic-api-keys.md`**.
 - No Runtime/SDK/Control Plane code changes; same **`file:../../ceiba-sdk-node`** dependency as the Express proof.
-- **Repo:** feature **`c3e4e77`** on **`feat/examples-programmatic-key-workflows`** (merge to **`dev`** pending review).
+- **Repo:** branch **`feat/examples-programmatic-key-workflows`** (merge to **`dev`** pending review; correction pass completes revoke + archive coverage).
 
 ## Next
 
