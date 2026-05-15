@@ -18,7 +18,7 @@
 ## 2026-05-15 — Fastify proof app (`feat/examples-fastify-proof`)
 
 - **`fastify-proof/`**: **`GET /v1/hello`** with **`ceibaFastifyPreHandler`**; **`file:../../ceiba-sdk-node`**, **Fastify ^5**; same **`.env.example`** as Express proof; no programmatic-keys script (narrow authorize mirror only).
-- **Repo:** feature **`232a40b`**, tip **`e5aa4be`**, on **`feat/examples-fastify-proof`** (merge to **`dev`** pending review).
+- **Repo:** feature **`232a40b`**, tip **`33f73f5`**, on **`feat/examples-fastify-proof`** (merge to **`dev`** pending review).
 
 ## Next
 
