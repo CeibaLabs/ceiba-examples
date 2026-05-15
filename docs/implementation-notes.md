@@ -13,6 +13,7 @@
 - **`express-proof/package.json`**: **`demo:programmatic-keys`** using **`node --env-file=.env`** (Node 20+).
 - **`express-proof/README.md`** + repo **`README.md`**: how to run; pointer to **`ceiba-docs`** **`programmatic-api-keys.md`**.
 - No Runtime/SDK/Control Plane code changes; same **`file:../../ceiba-sdk-node`** dependency as the Express proof.
+- **Repo:** feature **`c3e4e77`** on **`feat/examples-programmatic-key-workflows`** (merge to **`dev`** pending review).
 
 ## Next
 
