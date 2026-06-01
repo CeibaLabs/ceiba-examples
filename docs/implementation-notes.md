@@ -20,6 +20,12 @@
 - **`fastify-proof/`**: **`GET /v1/hello`** with **`ceibaFastifyPreHandler`**; **`file:../../ceiba-sdk-node`**, **Fastify ^5**; same **`.env.example`** as Express proof; no programmatic-keys script (narrow authorize mirror only).
 - **Repo:** feature **`232a40b`** on **`feat/examples-fastify-proof`** (merge to **`dev`** pending review).
 
+## Launch validation (2026-05-19, read-only)
+
+- **`dev`** at **`7281b1c`**: `fastify-proof/src/server.js` and express-proof README/programmatic demo align with `ceiba-docs`; no launch-blocking findings.
+- **Pre-release nice-to-have:** `express-proof/README.md` still says “Control Plane later” for provisioning; CP is landed — copy-only fix if Founder wants polish.
+- Live `npm start` / `demo:programmatic-keys` not run (env-dependent).
+
 ## Next
 
 - Further examples only when explicitly approved; keep each app narrow.
