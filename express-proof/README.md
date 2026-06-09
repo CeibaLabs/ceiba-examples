@@ -14,8 +14,9 @@ You need a **running Ceiba Runtime** and a **project** with:
 - matching **`CEIBA_PROJECT_ID`** and **`CEIBA_PROJECT_SECRET`**
 - an **API key** the caller will present (`Authorization: Bearer …` or `x-api-key`)
 - an **access policy** that allows **`GET /v1/hello`** for that key
+- any subscription/quota state Runtime requires for that project
 
-How you provision that data depends on your environment (internal bootstrap today; Control Plane later).
+For the landed MVP, operators usually provision the project, project secret, API keys, policies, and subscription state in the Control Plane. Local internal bootstrap can still be used by developers working directly against Runtime, but this example does not include Runtime bootstrap, migrations, or seed data.
 
 ## Run
 
@@ -54,6 +55,8 @@ npm run demo:programmatic-keys
 4. **`listApiKeys`** — prints the list again (after); you should see one **revoked** and one **archived** row among your project keys.
 
 See **`ceiba-docs`** **`docs/programmatic-api-keys.md`** in your CeibaLabs workspace clone for the HTTP/SDK reference that matches this flow.
+
+The script mutates real key rows for the configured project. It creates throwaway keys and then revokes/archives them; use a test project unless you intentionally want those rows in your project history.
 
 ## Denials and transport errors
 

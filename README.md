@@ -1,36 +1,46 @@
 # Ceiba Examples
 
-Runnable example apps for Ceiba are being prepared here.
+Runnable proof apps for the shipped Ceiba MVP.
 
-The goal of this repo is still the same:
-- start from an existing Node API
-- add Ceiba protection with the Node SDK
-- test a real protected-route flow
+These examples show the narrow integration surface that exists today:
 
-## What’s in this repository
+- Runtime-backed access decisions
+- SDK-first Express/Fastify integration
+- project secret transport auth through `CEIBA_PROJECT_SECRET`
+- API-key protected `GET /v1/hello`
+- programmatic API key lifecycle where already present
 
-- **`express-proof/`** — minimal Express server with **`GET /v1/hello`** protected by **`@ceibalabs/ceiba-sdk`** (`ceibaExpressMiddleware`), aligned with the public **`ceiba-docs`** quickstart.
-- **`fastify-proof/`** — same protected route with **`ceibaFastifyPreHandler`** (Fastify 5); same **`CEIBA_*`** env contract as **`express-proof/`**.
-- **`express-proof/scripts/programmatic-keys.mjs`** — CLI demo: **`listApiKeys`**, two throwaway keys (**revoke** path with expiry set/clear + **revoke**; **archive** path with **archive**), final **`listApiKeys`** (`npm run demo:programmatic-keys` from **`express-proof/`**). Documented in **`express-proof/README.md`**.
+They are not billing demos, gateway demos, or broad example galleries.
 
-## Who this is for
+## What Is In This Repository
 
-This repository is for teams who already have:
-- a Node API
-- an Express or Fastify service
-- a need for API keys, limits, plans, and controlled access
+| Example | Use It For | Scope |
+|---------|------------|-------|
+| `express-proof/` | Protecting an Express route with `ceibaExpressMiddleware`. | Minimal HTTP server with `GET /v1/hello`. |
+| `fastify-proof/` | Protecting a Fastify route with `ceibaFastifyPreHandler`. | Same route and env contract as Express. |
+| `express-proof/scripts/programmatic-keys.mjs` | Exercising machine-facing key lifecycle with `CeibaRuntimeClient`. | List, create, get, set/clear expiry, revoke, archive, list. |
 
-## Goal
+## When To Use Each Example
 
-Show the fastest path from:
+- Use **`express-proof/`** if your API is Express and you want the shortest protected-route proof.
+- Use **`fastify-proof/`** if your API is Fastify and you want the same Runtime + SDK shape in Fastify.
+- Use **`demo:programmatic-keys`** from `express-proof/` if your backend needs to create or retire customer keys without the Control Plane UI in the loop.
 
-> “I have an API”
+## Shared Environment
 
-to:
+Both HTTP examples use the same required Ceiba environment variables:
 
-> “I have a protected API with keys, limits, and commercial access rules”
+```bash
+CEIBA_RUNTIME_URL=http://localhost:8080
+CEIBA_PROJECT_ID=<project-uuid>
+CEIBA_PROJECT_SECRET=<project-secret>
+```
 
-## Run the Express proof
+`PORT` is example-local and controls the proof server listen port.
+
+Project ID and project secret normally come from the Control Plane project workflow. The project also needs an API key and an active policy that allow `GET /v1/hello`; if your Runtime enforces subscription or quota state for that project, configure those in the Control Plane as well.
+
+## Run The Express Proof
 
 ```bash
 cd express-proof
@@ -41,31 +51,63 @@ npm install
 npm start
 ```
 
-Optional — programmatic key lifecycle (**`CeibaRuntimeClient`**, no HTTP server):
+Smoke call:
+
+```bash
+curl -s -H "Authorization: Bearer <your-api-key>" http://localhost:<port>/v1/hello
+```
+
+Programmatic key lifecycle from the same folder:
 
 ```bash
 npm run demo:programmatic-keys
 ```
 
-Integration shape and denial behavior are documented in **`ceiba-docs`** (`docs/quickstart.md`).
-
-## Run the Fastify proof
+## Run The Fastify Proof
 
 ```bash
 cd fastify-proof
 cp .env.example .env
-# set CEIBA_RUNTIME_URL, CEIBA_PROJECT_ID, CEIBA_PROJECT_SECRET (use a different PORT if Express runs too)
+# set CEIBA_RUNTIME_URL, CEIBA_PROJECT_ID, CEIBA_PROJECT_SECRET
+# set PORT if Express is already using 3000
 
 npm install
 npm start
 ```
 
-Details in **`fastify-proof/README.md`**.
+Smoke call:
 
-## Related repos
+```bash
+curl -s -H "Authorization: Bearer <your-api-key>" http://localhost:3000/v1/hello
+```
 
-- SDK: `@ceibalabs/ceiba-sdk`
-- Docs: `@ceibalabs/ceiba-docs`
+## Docs
+
+The public docs source is in `ceiba-docs`:
+
+- `docs/index.md` - docs home and path chooser
+- `docs/quickstart.md` - request protection path
+- `docs/programmatic-api-keys.md` - machine-facing key lifecycle
+- `docs/control-plane-operator-guide.md` - operator setup
+- `docs/project-secret-rotation.md` - project secret rotation and overlap
+
+## Out Of Scope
+
+- no billing demos
+- no Stripe configuration
+- no billing plan seed/backfill
+- no new frameworks beyond Express/Fastify
+- no gateway mode
+- no x402
+- no MCP docs server
+- no platform expansion
+
+## Related Repos
+
+- SDK: `ceiba-sdk-node` (`@ceibalabs/ceiba-sdk`)
+- Docs: `ceiba-docs`
+- Runtime: `ceiba-runtime`
+- Control Plane: `ceiba-control-plane`
 
 ## Site
 

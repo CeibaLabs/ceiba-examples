@@ -9,7 +9,9 @@ Runnable **Fastify** app using the same **`GET /v1/hello`** protected-route cont
 
 ## Prerequisites
 
-Same as **`express-proof/`**: running Runtime, project id + secret, API key, and a policy matching **`GET /v1/hello`**.
+Same as **`express-proof/`**: running Runtime, project id + secret, API key, and a policy matching **`GET /v1/hello`**. If Runtime enforces subscription or quota state for the project, configure that state in Control Plane as well.
+
+For the landed MVP, operators usually create the project, copy the project secret, create keys, and manage policies in the Control Plane. This proof stays focused on the SDK adapter path and does not include Runtime bootstrap, migrations, seed data, or billing flows.
 
 ## Run
 
@@ -25,12 +27,12 @@ npm start
 
 **Dependency note:** `package.json` uses **`file:../../ceiba-sdk-node`** in the CeibaLabs workspace. Else use **`@ceibalabs/ceiba-sdk`** from npm.
 
-Use a different **`PORT`** than Express if both run locally (e.g. **`PORT=3001`**).
+Use a different **`PORT`** than Express if both run locally, for example **`PORT=3001`**.
 
 Smoke call:
 
 ```bash
-curl -s -H "Authorization: Bearer <your-api-key>" http://localhost:3000/v1/hello
+curl -s -H "Authorization: Bearer <your-api-key>" http://localhost:<port>/v1/hello
 ```
 
 ## Denials and transport errors

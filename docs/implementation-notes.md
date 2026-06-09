@@ -26,6 +26,16 @@
 - **Pre-release nice-to-have:** `express-proof/README.md` still says “Control Plane later” for provisioning; CP is landed — copy-only fix if Founder wants polish.
 - Live `npm start` / `demo:programmatic-keys` not run (env-dependent).
 
+## 2026-06-09 — MVP examples refresh (`feat/examples-mvp-refresh`)
+
+- Refreshed repo **`README.md`** around the shipped MVP example set: Runtime enforcement, SDK-first Express/Fastify route protection, and the existing programmatic key lifecycle script.
+- Updated **`express-proof/README.md`** to remove stale “Control Plane later” wording; it now points to Control Plane for project, key, policy, and subscription setup while keeping the example focused on the authorize path.
+- Added an explicit warning that **`npm run demo:programmatic-keys`** mutates real key rows for the configured project by creating throwaway keys and revoking/archiving them.
+- Updated **`fastify-proof/README.md`** to stay parallel to Express, clarify Control Plane provisioning, and avoid billing/bootstrap claims.
+- Updated both **`.env.example`** files to clarify that **`CEIBA_PROJECT_SECRET`** is Runtime transport auth sent as **`x-ceiba-project-secret`**.
+- Code unchanged: **`express-proof/src/server.js`**, **`fastify-proof/src/server.js`**, and **`express-proof/scripts/programmatic-keys.mjs`** already match the landed SDK adapter/client behavior.
+- Out of scope: Runtime/SDK/Control Plane/docs/landing edits, billing demos, Stripe config, new frameworks, gateway/x402/MCP/platform expansion.
+
 ## Next
 
-- Further examples only when explicitly approved; keep each app narrow.
+- Review/merge the examples refresh, then return to the explicit approval gate before billing plan-catalog seed/backfill or live-stack smoke.
