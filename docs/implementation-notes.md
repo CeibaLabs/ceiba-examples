@@ -36,6 +36,39 @@
 - Code unchanged: **`express-proof/src/server.js`**, **`fastify-proof/src/server.js`**, and **`express-proof/scripts/programmatic-keys.mjs`** already match the landed SDK adapter/client behavior.
 - Out of scope: Runtime/SDK/Control Plane/docs/landing edits, billing demos, Stripe config, new frameworks, gateway/x402/MCP/platform expansion.
 
+## 2026-07-03 — Release-stack examples smoke (`test/examples-release-smoke`)
+
+- Static parity confirmed against the final Quickstart and Programmatic API Keys docs:
+  - Express uses `ceibaExpressMiddleware`
+  - Fastify uses `ceibaFastifyPreHandler`
+  - both protect `GET /v1/hello`
+  - both use `CEIBA_RUNTIME_URL`, `CEIBA_PROJECT_ID`, and `CEIBA_PROJECT_SECRET`
+  - the lifecycle script matches list/create/read/expiry/revoke/archive documentation
+- Installed both proofs from committed lockfiles with `npm ci`; no dependency upgrade was performed.
+- Corrected both proof `start` and `dev` scripts to load the ignored local `.env` files their READMEs instruct operators to populate.
+- Environment assumptions:
+  - local Runtime health returned `200`
+  - both proof env files used the same disposable project, project secret, and downstream API key
+  - the project had an active `GET /v1/hello` policy and active Free subscription
+  - no credential or full plaintext key was recorded
+- Express proof on port 3100:
+  - configured valid key returned `200`, `ok: true`, and active Free access context
+  - intentionally invalid key returned `401 ceiba_unauthorized`
+- Fastify proof on separate port 3101 returned the same valid/invalid outcomes.
+- Programmatic lifecycle completed:
+  - initial list
+  - create/read revoke-path key
+  - set and clear expiry
+  - revoke
+  - create/read archive-path key
+  - archive
+  - final list with the new rows in `revoked` and `archived` states
+- Plaintext appeared only on the two create operations and was redacted from captured output.
+- A release blocker found during the first lifecycle run was corrected in the SDK on `fix/sdk-key-lifecycle-empty-body` at `ba2e65c`: revoke/archive now send the explicit `{}` JSON payload required when using `Content-Type: application/json`. Public HTTP guidance was aligned on `ceiba-docs/fix/docs-key-lifecycle-empty-body` at `3b62cbf`.
+- The new-project default Free provisioning gap remains intentionally deferred to `fix/control-plane-default-free-subscription` for a separate implications review. The existing idempotent seed remains the local backfill workaround.
+- Both proof servers were stopped; no background example server remains.
+
 ## Next
 
-- Review/merge the examples refresh, then return to the explicit approval gate before billing plan-catalog seed/backfill or live-stack smoke.
+- Review the coordinated SDK, docs, and examples commits independently.
+- Address default Free provisioning in the separate approved Control Plane slice before final deployment smoke.
