@@ -1,9 +1,9 @@
 import Fastify from "fastify";
 import {
   CeibaRuntimeClient,
-  ceibaFastifyPreHandler,
   parseCeibaSdkConfig,
 } from "@ceibalabs/ceiba-sdk";
+import { ceibaFastifyPreHandler } from "@ceibalabs/ceiba-sdk/fastify";
 
 const config = parseCeibaSdkConfig({
   runtimeBaseUrl: process.env.CEIBA_RUNTIME_URL,

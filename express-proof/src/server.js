@@ -1,9 +1,9 @@
 import express from "express";
 import {
   CeibaRuntimeClient,
-  ceibaExpressMiddleware,
   parseCeibaSdkConfig,
 } from "@ceibalabs/ceiba-sdk";
+import { ceibaExpressMiddleware } from "@ceibalabs/ceiba-sdk/express";
 
 const config = parseCeibaSdkConfig({
   runtimeBaseUrl: process.env.CEIBA_RUNTIME_URL,

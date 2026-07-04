@@ -68,6 +68,16 @@
 - The new-project default Free provisioning gap remains intentionally deferred to `fix/control-plane-default-free-subscription` for a separate implications review. The existing idempotent seed remains the local backfill workaround.
 - Both proof servers were stopped; no background example server remains.
 
+## 2026-07-04 — SDK adapter import alignment
+
+- Kept `CeibaRuntimeClient` and `parseCeibaSdkConfig` on `@ceibalabs/ceiba-sdk`.
+- Updated the Express proof to import `ceibaExpressMiddleware` from `@ceibalabs/ceiba-sdk/express` and the Fastify proof to import `ceibaFastifyPreHandler` from `@ceibalabs/ceiba-sdk/fastify`.
+- Reinstalled both proofs from their committed lockfiles against the linked landed SDK without changing dependency intent; server and lifecycle-script syntax checks passed.
+- Live Runtime smoke passed with one disposable key that was revoked during cleanup:
+  - Express and Fastify valid requests returned `200` with `ok: true`.
+  - Express and Fastify intentionally invalid requests returned `401 ceiba_unauthorized`.
+- Both proof servers stopped cleanly, ports `3100` and `3101` were free afterward, and no credential or plaintext key was recorded.
+
 ## Next
 
 - Review the coordinated SDK, docs, and examples commits independently.
